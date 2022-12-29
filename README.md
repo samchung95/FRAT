@@ -7,13 +7,14 @@ Facial Recognition Attendance Taker is an application that helps to take attenda
 1. Install Cmake - dependencies folder 
 1. Instal Visio Studio <br>
 Install the c++ compiler of the visual studio code community version
+![image](https://user-images.githubusercontent.com/41113285/209984918-77f3893b-38fe-4430-b070-71ddfa9f78ac.png)
 1.  Update pip, setuptools and wheel <br>
     ```
     py -m pip install --upgrade pip setuptools wheel
     ```
-    image.png
+    
 
-2. Set the execution policy for the current user scope <br>
+1. Set the execution policy for the current user scope <br>
     ```
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
     ```
