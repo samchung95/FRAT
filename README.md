@@ -24,7 +24,13 @@ Install the c++ compiler of the visual studio code community version
     py -m venv tutorial_env
     tutorial_env\Scripts\activate
     ```
-1. Install cmake module. <br>
+1. Install requirements.txt <br>
     ```
     pip install -r requirements.txt
     ```
+
+# How to use
+
+# Documentation
+
+# References
