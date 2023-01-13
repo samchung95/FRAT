@@ -29,5 +29,6 @@ class VideoCapture:
             pass
 
     def stop(self):
+        self.video_capture.release()
         self.grabbing = False
     
