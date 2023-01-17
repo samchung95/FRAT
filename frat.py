@@ -8,12 +8,12 @@ import pickle
 from VideoCapture import VideoCapture
 
 class FRAT:
-    def __init__(self, filepath="encodings") -> None:
+    
+    def __init__(self, callback = None) -> None:
         self.videocapture = VideoCapture(0)
         self.draw = True
-        self.callback = None
+        self.callback = callback
         self.thread = None
-        self.filepath = filepath
 
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
         self.datpath = os.path.join(self.dir_path,'dataset_faces.dat')
@@ -29,7 +29,6 @@ class FRAT:
         all_face_encodings = {}
 
         directory = 'images'
-        
 
         for i,(root, dirs, files) in enumerate(os.walk(os.path.join(self.dir_path,directory))):
             if i > 0:
@@ -39,14 +38,12 @@ class FRAT:
 
                     img = face_recognition.load_image_file(os.path.join(root,file))
                     all_face_encodings[foldername] = face_recognition.face_encodings(img)[0]
-
-
-        print(self.dir_path)
-        print(all_face_encodings)
+        
 
         # Write encoding
         with open(self.datpath, 'wb') as f:
             pickle.dump(all_face_encodings,f)
+            print(f'encoding saved to {self.datpath}')
             f.close()
 
 
@@ -64,8 +61,8 @@ class FRAT:
         known_face_encodings = np.array(list(all_face_encodings.values()))
         known_face_names = list(all_face_encodings.keys())
 
-        print(known_face_encodings)
-        print(known_face_names)
+
+        print(f'Known faces: {known_face_names}')
 
         while self.running:
             
@@ -158,6 +155,7 @@ class FRAT:
     
     def stop(self):
         print('Stopping...')
+
         self.running = False
         self.videocapture.stop()
         cv2.destroyAllWindows()

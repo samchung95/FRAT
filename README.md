@@ -31,6 +31,25 @@ Install the c++ compiler of the visual studio code community version
 
 # How to use
 
-# Documentation
+0. import FRAT
+    ```
+    from frat import FRAT
+    ```
+
+1. Create FRAT class with callback if any
+    ```
+    frat = FRAT(callback)
+    ```
+
+2. Create encodings
+    ```
+    frat.encodeFaces()
+    ```
+    Note: Make sure to put an image in a folder inside 'images' before encoding faces. e.g.(image/samuel/samuel.jpg)
+
+3. Start FRAT
+    ```
+    frat.start()
+    ```
 
 # References
