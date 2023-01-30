@@ -1,27 +1,33 @@
 import csv
+import os
 
-def csvToDict(filepath):
-    dic = {}
-    with open(filepath,'r') as file:
-        lines = file.readlines()
-        header_row = lines[0]
-        headers = header_row.split(',')
-        rows = lines[1:]
+def writeAttendance(data:list[dict]):
 
-        for row in rows:
-            columns = row.split(',')
-            dic[columns[0]] = {}
-            for i,header in enumerate(headers):
-                dic[columns[0]][header] = columns[i]
+    header = list(data[0].keys())
 
-        file.close()
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    csvpath = os.path.join(dir_path,'attendance.csv')
 
-    return dic
-        #TRUNCATE
+    if os.path.exists(csvpath):
+        with open(csvpath, newline='') as csvfile:
+
+            reader = csv.DictReader(csvfile)
+            temp = []
+            for row in reader:
+                r = {header[0]: row[header[0]],
+                     header[1]: row[header[1]]}
+                temp.append(r)
+
+            data=temp+data
+
+    with open(csvpath, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=header)
+
+        writer.writeheader()
+        writer.writerows(data)
 
 
-with open('attendance.csv', mode='r') as infile:
-    reader = csv.reader(infile)
-    with open('coors_new.csv', mode='w') as outfile:
-        writer = csv.writer(outfile)
-        mydict = {rows[0]:rows[1] for rows in reader}
+
+if __name__ == "__main__":
+    # writeAttendance([{'name':'Huai','date':'test8'}])
+    pass
