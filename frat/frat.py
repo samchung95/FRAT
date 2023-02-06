@@ -6,10 +6,12 @@ import os
 import pickle
 
 from VideoCapture import VideoCapture
+from attendance import writeAttendance
+from datetime import datetime
 
 class FRAT:
     
-    def __init__(self, callback = None) -> None:
+    def __init__(self, callback:function = None) -> None:
         self.videocapture = VideoCapture(0)
         self.draw = True
         self.callback = callback
@@ -24,11 +26,10 @@ class FRAT:
 
         self.running = False
 
-
     def encodeFaces(self):
         all_face_encodings = {}
 
-        directory = 'images'
+        directory = '../images'
 
         for i,(root, dirs, files) in enumerate(os.walk(os.path.join(self.dir_path,directory))):
             if i > 0:
@@ -50,7 +51,7 @@ class FRAT:
         pass
     
     # Get faces using frame 2
-    def getFaces(self,callback=None):
+    def getFaces(self):
         print('Start get faces')
 
         # Load encodings
@@ -108,8 +109,8 @@ class FRAT:
                 # print(self.proc_face_names)
                 # print(self.proc_face_locations)
 
-                if callback is not None and type(callback) is function:
-                    callback(self.proc_face_names,self.proc_face_locations)
+                if self.callback is not None:
+                    self.callback(self.proc_face_names)
 
             
 
@@ -160,7 +161,11 @@ class FRAT:
         self.videocapture.stop()
         cv2.destroyAllWindows()
 
+def takeAttendance(data:list):
+    for name in data:
+        writeAttendance({'name':name,'date':datetime.now().strftime('%d/%m/%y')})
+
+
 if __name__ == '__main__':
-    frat = FRAT()
-    frat.start()
+    pass
 
