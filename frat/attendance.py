@@ -20,12 +20,14 @@ def writeAttendance(data:list[dict]):
                 temp.append(r)
 
             data=temp+data
+            csvfile.close()
 
     with open(csvpath, 'w', newline='') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=header)
 
         writer.writeheader()
         writer.writerows(data)
+        csvfile.close()
 
 def writeNewAttendance(data:list[dict]):
 

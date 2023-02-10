@@ -6,12 +6,12 @@ import os
 import pickle
 
 from VideoCapture import VideoCapture
-from attendance import writeAttendance
+from attendance import writeNewAttendance
 from datetime import datetime
 
 class FRAT:
     
-    def __init__(self, callback:function = None) -> None:
+    def __init__(self, callback = None) -> None:
         self.videocapture = VideoCapture(0)
         self.draw = True
         self.callback = callback
@@ -40,7 +40,7 @@ class FRAT:
                     img = face_recognition.load_image_file(os.path.join(root,file))
                     all_face_encodings[foldername] = face_recognition.face_encodings(img)[0]
         
-
+        print(all_face_encodings)
         # Write encoding
         with open(self.datpath, 'wb') as f:
             pickle.dump(all_face_encodings,f)
@@ -79,8 +79,8 @@ class FRAT:
                 rgb_small_frame = small_frame[:, :, ::-1]
                 
                 # Find all the faces and face encodings in the current frame of video
-                self.temp_face_locations = face_recognition.face_locations(rgb_small_frame)
-                face_encodings = face_recognition.face_encodings(rgb_small_frame, self.temp_face_locations)
+                self.temp_face_locations = face_recognition.face_locations(self.videocapture.frame2)
+                face_encodings = face_recognition.face_encodings(self.videocapture.frame2, self.temp_face_locations)
 
                 
                 for face_encoding in face_encodings:
@@ -163,9 +163,13 @@ class FRAT:
 
 def takeAttendance(data:list):
     for name in data:
-        writeAttendance({'name':name,'date':datetime.now().strftime('%d/%m/%y')})
+        if name is not "Unknown":
+            writeNewAttendance([{'name':name,'date':datetime.now().strftime('%d/%m/%y')}])
 
 
 if __name__ == '__main__':
+    frat = FRAT(callback = takeAttendance)
+    # frat.encodeFaces()
+    frat.start()
     pass
 
